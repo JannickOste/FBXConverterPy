@@ -1,6 +1,7 @@
 import sys
 import os
-from FBXDocumentParser import FBXDocumentParser
+
+from Infrastructure.Parser.FBXDocumentParser import FBXDocumentParser
 
 class FBXConverter: 
     __argv: list[str]; 

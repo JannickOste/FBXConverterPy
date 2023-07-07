@@ -1,37 +1,36 @@
-from Components.FBXDocumentHeader import FBXDocumentHeader
+from Domain.Entities.Document.FBXDocumentHeader import FBXDocumentHeader
 
-from Components.FBXDocumentNode import FBXDocumentNode
-from Components.FBXDocument import FBXDocument
-from DataView.DataView import DataView
+from Domain.Entities.Document.FBXDocumentNode import FBXDocumentNode
+from Domain.Entities.Document.FBXDocument import FBXDocument
+from Domain.Entities.DataView.DataView import DataView
+from Domain.Entities.DataView.DataViewInterface import DataViewInterface
+from Infrastructure.Parser.FBXPropertyParser import FBXPropertyParser
 
       
 
 class FBXDocumentParser: 
-    parent = None
-    __buffer: bytes; 
-    __topLevelContentReader: DataView;
-    __headerContentReader: DataView;
+    __topLevelContentParser: DataViewInterface;
+    __contentParser: DataViewInterface
     
-    def __init__(self, buffer: bytes) -> None:
-        self.__buffer = buffer
-        self.__topLevelContentReader = DataView(buffer[27:])
-        self.__headerContentReader = DataView(buffer[:27])
+    @property 
+    def HEADER_CONTENT_LENGTH(self) -> int: 
+        return 27;
     
-    @property
-    def __nodeBuffer(self):
-        return self.__buffer[27:]
+    def __init__(self: 'FBXDocumentParser', buffer: bytes) -> None:
+        self.__topLevelContentParser = FBXPropertyParser(buffer[self.HEADER_CONTENT_LENGTH:]);
+        self.__contentParser = FBXPropertyParser(buffer);
     
-        device
-    def __parseHeader(self): 
+    def __parseHeader(self: 'FBXDocumentParser') -> FBXDocumentHeader: 
         return FBXDocumentHeader(
-            self.__headerContentReader.readString(0, 20).value,
-            self.__headerContentReader.targetBuffer[21:23],
-            self.__headerContentReader.readInt32(23).value
+            self.__contentParser.readString(0, 20).value,
+            self.__contentParser.targetBuffer[21:23],
+            self.__contentParser.readInt32(23).value
         )
 
-    def __parseNodes(self, offset = 0, document = None) -> FBXDocumentNode: 
-        if(offset >= len(self.__topLevelContentReader.targetBuffer)):
+    def __parseNodes(self: 'FBXDocumentParser', offset = 0, document = None) -> FBXDocumentNode: 
+        if(offset >= len(self.__topLevelContentParser.targetBuffer)):
             return document
+        
         startOffset = offset
         endOffset, numProps, propsLen, name, offset, properties = self.__readNodeRecord(offset)
         document = FBXDocumentNode(startOffset, endOffset, numProps, propsLen, name, properties, document)
@@ -40,7 +39,7 @@ class FBXDocumentParser:
             
         return self.__parseNodes(offset, document)
             
-    def __printDebugInfo(self, node: FBXDocumentNode, offset: int): 
+    def __printDebugInfo(self: 'FBXDocumentParser', node: FBXDocumentNode, offset: int) -> None: 
         for [key, value] in {
             "startOffset": node.startOffset,
             "endOffset": node.endOffset, "numProperties": node.propertiesCount, "propertiesLength": node.propertiesLength, "name": node.name
@@ -56,17 +55,17 @@ class FBXDocumentParser:
                 
     
         
-    def __readNodeRecord(self, offset):
-        endOffset, numProperties, propertyListLen = [self.__topLevelContentReader.readInt32((offset+(i*4))) for i in range(3)]
-        nameLen = self.__topLevelContentReader.readUint8t(propertyListLen.endOffset)
-        name = self.__topLevelContentReader.readString(nameLen.endOffset, nameLen.value)
+    def __readNodeRecord(self: 'FBXDocumentParser', offset: int):
+        endOffset, numProperties, propertyListLen = [self.__topLevelContentParser.readInt32((offset+(i*4))) for i in range(3)]
+        nameLen = self.__topLevelContentParser.readUChar(propertyListLen.endOffset)
+        name = self.__topLevelContentParser.readString(nameLen.endOffset, nameLen.value)
         offset = name.endOffset
         
         properties = []
         if numProperties.value:
             for _ in range(numProperties.value):
-                typeCode = self.__topLevelContentReader.readChar(offset)
-                result = self.__topLevelContentReader.readByTypeCode(typeCode.endOffset, typeCode.value)
+                typeCode: DataViewInterface = self.__topLevelContentParser.readChar(offset)
+                result = self.__topLevelContentParser.readByTypeCode(typeCode.endOffset, typeCode.value)
                 
                 if result is None:
                     
@@ -76,8 +75,8 @@ class FBXDocumentParser:
                     continue
                 
                 
-                offset = result[1]
-                properties.append(result[0])
+                offset = result.endOffset
+                properties.append(result.value)
             
         
         return [
