@@ -13,7 +13,7 @@ Key Components:
     <li>FBXDocumentHeader: Represents the header of an FBX file, containing information such as the file magic, null bytes, and version number.</li>
     <li>FBXDocumentNode: Represents a node within the FBX document hierarchy, containing properties and child nodes.</li>
     <li>FBXDocument: Represents the overall FBX document, consisting of the file header and the top-level document node.</li>
-<ol>
+</ol>
 
 The library utilizes a DataView class for efficient byte-level data reading and manipulation. It supports various data types, including strings, integers, floats, and arrays.
 
@@ -30,7 +30,7 @@ Project Goals:
     <li>Provide documentation and examples to assist developers in using the library.</li>
     <li>Ensure compatibility with different versions of FBX files</li>.
     <li>JSON Serialization and deserialization</li>.
-<ol>
+</ol>
 
 Usage Example:
 ```
