@@ -12,5 +12,5 @@ if command -v python > /dev/null; then
     #python $ROOT/$MAIN_ENTRY_POINT $FILE
     python $ROOT/$MAIN_ENTRY_POINT $ROOT/test.fbx
 else
-    echo "Python does not exist, install python using a package-manager and try again..."
+    echo "Python not installed, install python using a package-manager and try again..."
 fi    
