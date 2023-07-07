@@ -33,7 +33,7 @@ Please note that this project is not affiliated with Autodesk, the creator of FB
     <li>JSON Serialization and deserialization.</li>
 </ol>
 
-Usage Example:
+## Usage Example:
 ```
 # Parse an FBX file
 with open('example.fbx', 'rb') as file:
