@@ -1,110 +1,9 @@
-import struct
-import zlib
 from Components.FBXDocumentHeader import FBXDocumentHeader
 
 from Components.FBXDocumentNode import FBXDocumentNode
 from Components.FBXDocument import FBXDocument
+from DataView.DataView import DataView
 
-class DataViewResult:
-    __value = None 
-    __startOffset = -1
-    __endOffset = -1
-    
-    def __init__(self, value, startOffset: int, endOffset: int) -> None:
-        self.__value = value 
-        self.__startOffset = startOffset
-        self.__endOffset = endOffset
-    
-    @property
-    def value(self):
-        """ The value retrieved from the buffer """
-        return self.__value 
-    
-    @property
-    def startOffset(self):
-        """ The position where the record has been read """
-        return self.__startOffset
-    
-    @property
-    def endOffset(self): 
-        """ The position after the record (i.e. the first byte of whatever comes next) """
-        return self.__endOffset
-
-class DataView:
-    __buffer: bytes
-
-    def __init__(self, buffer: bytes) -> None:
-        self.__buffer = buffer
-        
-        
-    @property
-    def targetBuffer(self) -> bytes: 
-        return self.__buffer
-
-    def readByTypeCode(self, offset: int, type_code: str) -> tuple:
-        # Same implementation as in the original code
-        if type_code == "Y":
-            value = struct.unpack("<h", self.__buffer[offset:offset+2])[0]
-            return value, offset + 2
-        elif type_code == "C":
-            value = bool(self.__buffer[offset])
-            return value, offset + 1
-        elif type_code == "I":
-            value = struct.unpack("<i", self.__buffer[offset:offset+4])[0]
-            return value, offset + 4
-        elif type_code == "F":
-            value = struct.unpack("<f", self.__buffer[offset:offset+4])[0]
-            return value, offset + 4
-        elif type_code == "D":
-            value = struct.unpack("<d", self.__buffer[offset:offset+8])[0]
-            return value, offset + 8
-        elif type_code == "L":
-            value = struct.unpack("<q", self.__buffer[offset:offset+8])[0]
-            return value, offset + 8
-        elif type_code == "B":
-            value = struct.unpack("<B", self.__buffer[offset:offset+1])[0]
-            return value, offset + 1
-
-    def readInt16(self, offset: int) -> DataViewResult:
-        """ 2 byte signed Integer """
-        value, end_offset = self.readByTypeCode(offset, "Y")
-        return DataViewResult(value, offset, end_offset)
-
-    def readBoolean(self, offset: int) -> DataViewResult:
-        """ 1 bit boolean (1: true, 0: false) encoded as the LSB of a 1 Byte value. """
-        value, end_offset = self.readByTypeCode(offset, "C")
-        return DataViewResult(value, offset, end_offset)
-
-    def readInt32(self, offset: int) -> DataViewResult:
-        """ 4 byte signed Integer """
-        value, end_offset = self.readByTypeCode(offset, "I")
-        return DataViewResult(value, offset, end_offset)
-
-    def readInt64(self, offset: int) -> DataViewResult:
-        """ 8 byte signed Integer """
-        value, end_offset = self.readByTypeCode(offset, "L")
-        return DataViewResult(value, offset, end_offset)
-    
-    def readUint8t(self, offset: int) -> DataViewResult: 
-        value, end_offset = self.readByTypeCode(offset, "B")
-        return DataViewResult(value, offset, end_offset)
-
-    def readFloat(self, offset: int) -> DataViewResult:
-        """ 4 byte single-precision IEEE 754 number """
-        value, end_offset = self.readByTypeCode(offset, "F")
-        return DataViewResult(value, offset, end_offset)
-
-    def readDouble(self, offset: int) -> DataViewResult:
-        """ 8 byte double-precision IEEE 754 number """
-        value, end_offset = self.readByTypeCode(offset, "D")
-        return DataViewResult(value, offset, end_offset)
-    
-    def readString(self, offset: int, length: int):
-        return DataViewResult(self.__buffer[offset:offset+length].decode("latin-1"), offset, offset+length)
-    
-    def readChar(self, offset:int) -> DataViewResult:
-        return DataViewResult(chr(self.__buffer[offset]), offset, offset+1)
- 
       
 
 class FBXDocumentParser: 
@@ -122,7 +21,7 @@ class FBXDocumentParser:
     def __nodeBuffer(self):
         return self.__buffer[27:]
     
-        
+        device
     def __parseHeader(self): 
         return FBXDocumentHeader(
             self.__headerContentReader.readString(0, 20).value,
@@ -131,9 +30,8 @@ class FBXDocumentParser:
         )
 
     def __parseNodes(self, offset = 0, document = None) -> FBXDocumentNode: 
-        if(offset >= len(self.__nodeBuffer)):
+        if(offset >= len(self.__topLevelContentReader.targetBuffer)):
             return document
-        
         startOffset = offset
         endOffset, numProps, propsLen, name, offset, properties = self.__readNodeRecord(offset)
         document = FBXDocumentNode(startOffset, endOffset, numProps, propsLen, name, properties, document)
@@ -144,6 +42,7 @@ class FBXDocumentParser:
             
     def __printDebugInfo(self, node: FBXDocumentNode, offset: int): 
         for [key, value] in {
+            "startOffset": node.startOffset,
             "endOffset": node.endOffset, "numProperties": node.propertiesCount, "propertiesLength": node.propertiesLength, "name": node.name
         }.items():
             print(key, ':', value)
@@ -168,8 +67,14 @@ class FBXDocumentParser:
             for _ in range(numProperties.value):
                 typeCode = self.__topLevelContentReader.readChar(offset)
                 result = self.__topLevelContentReader.readByTypeCode(typeCode.endOffset, typeCode.value)
+                
                 if result is None:
+                    
+                    print(typeCode.value, typeCode.endOffset)
+                    raise Exception("Woeps this shouldnt be the case")
+                    
                     continue
+                
                 
                 offset = result[1]
                 properties.append(result[0])

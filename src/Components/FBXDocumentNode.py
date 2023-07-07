@@ -8,6 +8,7 @@ class FBXDocumentNode:
     __properties = []
     
     def __init__(self, startOffset: int, endOffset: int, propertiesCount: int, propertiesLength: int, name: str, properties, parent) -> None:
+        self.__startOffset = startOffset
         self.__endOffset = endOffset
         self.__propertiesCount = propertiesCount
         self.__propertiesLength = propertiesLength
