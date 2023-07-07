@@ -9,7 +9,7 @@ This is a project aimed to be an introduction to the FBX file standard, so this 
 
 The library provides classes and functions to read and extract information from FBX files, including the file header, document structure, nodes, and properties. It aims to simplify the process of working with FBX files and enable developers to integrate FBX functionality into their applications.
 
-Key Components:
+## Key Components:
 <ol type="1">
     <li><b>FBXDocumentHeader:</b> Represents the header of an FBX file, containing information such as the file magic, null bytes, and version number.</li>
     <li><b>FBXDocumentNode:</b> Represents a node within the FBX document hierarchy, containing properties and child nodes.</li>
@@ -22,7 +22,7 @@ The project is currently a work in progress and aims to provide a comprehensive 
 
 Please note that this project is not affiliated with Autodesk, the creator of FBX. It is an independent effort to provide a Python-based solution for FBX file handling.
 
-Project Goals:
+## Project Goals:
 <ol type="1">
     <li>Parse and extract information from FBX files.</li>
     <li>Provide an object-oriented interface for working with FBX data.</li>
