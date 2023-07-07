@@ -1,18 +1,19 @@
 # FBXConverterPy
 
-<img src="https://img.shields.io/badge/current_state-in_progress-yellow" alt="project" />
+![](https://img.shields.io/badge/current_state-in_progress-yellow)
+![](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white)
 
 Python library for parsing and working with FBX (Filmbox) files. FBX is a binary file format used for storing 3D models, animations, and other related data in the computer graphics industry.
 
-This is a project aimed to be an introduction to the FBX file standard, so this project will not be long term updated once the primary goals have been achieved. 
+This is a project aimed to be an introduction to the FBX file standard, so this project will <u>not</u> be long term updated once the primary goals have been achieved. 
 
 The library provides classes and functions to read and extract information from FBX files, including the file header, document structure, nodes, and properties. It aims to simplify the process of working with FBX files and enable developers to integrate FBX functionality into their applications.
 
 Key Components:
 <ol type="1">
-    <li>FBXDocumentHeader: Represents the header of an FBX file, containing information such as the file magic, null bytes, and version number.</li>
-    <li>FBXDocumentNode: Represents a node within the FBX document hierarchy, containing properties and child nodes.</li>
-    <li>FBXDocument: Represents the overall FBX document, consisting of the file header and the top-level document node.</li>
+    <li><b>FBXDocumentHeader:</b> Represents the header of an FBX file, containing information such as the file magic, null bytes, and version number.</li>
+    <li><b>FBXDocumentNode:</b> Represents a node within the FBX document hierarchy, containing properties and child nodes.</li>
+    <li><b>FBXDocument:</b> Represents the overall FBX document, consisting of the file header and the top-level document node.</li>
 </ol>
 
 The library utilizes a DataView class for efficient byte-level data reading and manipulation. It supports various data types, including strings, integers, floats, and arrays.
