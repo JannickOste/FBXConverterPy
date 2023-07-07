@@ -26,10 +26,10 @@ Project Goals:
     <li>Parse and extract information from FBX files.</li>
     <li>Provide an object-oriented interface for working with FBX data.</li>
     <li>Support reading and writing of FBX files.</li>
-    <li>Enable modification and creation of FBX files programmatically</li>.
+    <li>Enable modification and creation of FBX files programmatically.</li>
     <li>Provide documentation and examples to assist developers in using the library.</li>
-    <li>Ensure compatibility with different versions of FBX files</li>.
-    <li>JSON Serialization and deserialization</li>.
+    <li>Ensure compatibility with different versions of FBX files</li>
+    <li>JSON Serialization and deserialization.</li>
 </ol>
 
 Usage Example:
