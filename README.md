@@ -1,7 +1,7 @@
 # FBXConverterPy
 
 ![](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=white)
-![](https://img.shields.io/badge/current_state-finished-21a62a?style=for-the-badge)
+![](https://img.shields.io/badge/current_state-working-21a62a?style=for-the-badge)
 
 Python library for parsing and working with FBX (Filmbox) files. FBX is a binary file format used for storing 3D models, animations, and other related data in the computer graphics industry.
 
