@@ -2,7 +2,6 @@ import struct
 from typing import Any
 from Domain.Entities.DataView.DataViewResult import DataViewResult
 from Domain.Entities.DataView.DataViewInterface import DataViewInterface
-import numpy as np
 
 
 class DataView:
@@ -108,7 +107,7 @@ class DataView:
         
         assert value >= -32768 and value <= 32767;
         
-        return DataViewResult(np.short(value), start, end);
+        return DataViewResult(value, start, end);
     
     def readUShort(self, offset: int) -> DataViewResult: 
         """
@@ -124,7 +123,7 @@ class DataView:
         
         assert value >= 0 and value <= 65535;
         
-        return DataViewResult(np.ushort(value), start, end);
+        return DataViewResult(value, start, end);
     
 
     def readInt32(self, offset: int) -> DataViewResult:
@@ -141,7 +140,7 @@ class DataView:
         
         assert value >= -2147483648 and value <= 2147483647;
         
-        return DataViewResult(np.int32(value), start, end)
+        return DataViewResult(value, start, end)
 
 
     def readUInt32(self, offset: int) -> DataViewResult:

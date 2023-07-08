@@ -6,11 +6,11 @@
 MAIN_ENTRY_POINT=src/main.py
 ROOT=$(dirname -- "$( readlink -f -- "$0"; )");
 FILE=$1;
+OUT=$2
 
 if command -v python > /dev/null; then
     # file path reading disabled for testing defaults to the test.fbx file in the root. 
-    #python $ROOT/$MAIN_ENTRY_POINT $FILE
-    python $ROOT/$MAIN_ENTRY_POINT $ROOT/test.fbx
+    python $ROOT/$MAIN_ENTRY_POINT $FILE $OUT
 else
     echo "Python not installed, install python using a package-manager and try again..."
 fi    

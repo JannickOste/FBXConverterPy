@@ -66,35 +66,3 @@ class FBXDocumentNode:
         """Get the list of properties in the node."""
         return self.__properties
     
-    def toJson(self: 'FBXDocumentNode', target: Self) -> str: 
-        """
-        Serialize the FBXDocumentNode object to a JSON string.
-
-        Returns:
-            str: The JSON representation of the FBXDocumentNode.
-        """
-        target = self if target is None else target 
-        
-        serialized = {}
-        modulePrefix: str = '_{module}__'
-        for prop in [s for s in dir(target) if s.startswith(modulePrefix.format(module=target.__module__))]: 
-            propertyName:str = prop.split('__')[-1]
-            propertyValue =  getattr(target, propertyName)
-            serialized[propertyName] = str(propertyValue) if isinstance(propertyValue, FBXDocumentNode) \
-                                                          else propertyValue if propertyValue is not None \
-                                                           else ''
-
-        return str(serialized).replace('\\\'', '\'')
-    
-    def fromJson(self: 'FBXDocumentNode', value: str, parent: 'FBXDocumentNode' = None) -> 'FBXDocumentNode':
-        """
-        Deserialize a JSON string and populate the FBXDocumentNode object.
-
-        Args:
-            value (str): The JSON string to deserialize.
-            parent (DataViewInterface, optional): The parent DataViewInterface object. Defaults to None.
-
-        Returns:
-            FBXDocumentNode: The deserialized FBXDocumentNode object.
-        """
-        raise NotImplementedError()
