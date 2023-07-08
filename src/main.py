@@ -7,7 +7,7 @@ class FBXConverter:
     __argv: list[str]; 
     
     @staticmethod
-    def __init(*args) -> None:
+    def __init(*args: list[str]) -> None:
         try:
             if len(args) < 1: 
                 raise Exception("Source argument not found...");
@@ -22,7 +22,7 @@ class FBXConverter:
         }
         
     @staticmethod 
-    def main(*args): 
+    def main(*args: list[str]): 
         kwargs = FBXConverter.__init(*args)
         
         with open(kwargs["filepath"], "rb") as file:

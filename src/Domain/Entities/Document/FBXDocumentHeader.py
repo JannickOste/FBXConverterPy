@@ -1,7 +1,7 @@
 class FBXDocumentHeader:
-    _fileMagic: str
-    _nullBytes: bytes
-    _versionNumber: int
+    __fileMagic: str
+    __nullBytes: bytes
+    __versionNumber: int
     
     def __init__(self: 'FBXDocumentHeader', fileMagic: str, nullBytes: bytes, versionNumber: int) -> None:
         """
@@ -12,9 +12,9 @@ class FBXDocumentHeader:
             nullBytes (bytes): The null bytes.
             versionNumber (int): The version number.
         """
-        self._fileMagic = fileMagic
-        self._versionNumber = versionNumber
-        self._nullBytes = nullBytes
+        self.__fileMagic = fileMagic
+        self.__versionNumber = versionNumber
+        self.__nullBytes = nullBytes
         
         self.__validateHeader()
 
@@ -26,7 +26,7 @@ class FBXDocumentHeader:
         Returns:
             str: The file magic string.
         """
-        return self._fileMagic
+        return self.__fileMagic
 
     @property
     def nullBytes(self: 'FBXDocumentHeader') -> bytes:
@@ -36,7 +36,7 @@ class FBXDocumentHeader:
         Returns:
             bytes: The null bytes.
         """
-        return self._nullBytes
+        return self.__nullBytes
 
     @property
     def versionNumber(self: 'FBXDocumentHeader') -> int:
@@ -46,7 +46,7 @@ class FBXDocumentHeader:
         Returns:
             int: The version number.
         """
-        return self._versionNumber
+        return self.__versionNumber
 
     # TODO: Has to be moved to a voter extended class. 
     def __validateHeader(self: 'FBXDocumentHeader') -> None: 

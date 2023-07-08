@@ -24,7 +24,7 @@ class FBXDocumentParser:
         return FBXDocumentHeader(
             self.__contentParser.readString(0, 20).value,
             self.__contentParser.targetBuffer[21:23],
-            self.__contentParser.readInt32(23).value
+            self.__contentParser.readUInt32(23).value
         )
 
     def __parseNodes(self: 'FBXDocumentParser', offset = 0, document = None) -> FBXDocumentNode: 
