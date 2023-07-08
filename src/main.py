@@ -20,19 +20,33 @@ class FBXConverter:
         
         
     @staticmethod
-    def __init(*args: list[str]) -> dict:
+    def __init(args: list[str]) -> dict:
         if len(args) < 1: 
             raise Exception("Source argument not found...")
         elif len(args)< 2:
             raise Exception("Output filepath not found...")
         
-        if not os.path.exists(args[0]):
+        source, target = args
+        if not os.path.exists(source):
             raise Exception("Source file does not exists...")
- 
+        elif not source.lower().endswith("fbx"):
+            raise Exception("Source file is no FBX file.")
+            
+        if os.path.exists(target):
+            print("File already exists, do you wish to overwrite the file?")
+            inp = ""
+            while ["y", "n"].count(inp) == 0:
+                if len(inp):
+                    print("Invalid input, input must be (Y)es/(N)o")
+                    
+                inp = input().lower()
+            if inp == "n":
+                sys.exit(-1)
+                
  
         return {
-            "source": args[0],
-            "target": args[1]
+            "source": source,
+            "target": target
         }
     
     def __act(**kwargs) -> None:
@@ -52,6 +66,8 @@ class FBXConverter:
             file.write(output)
             file.close()
         print("Object succesfully serialized")
+        
+
         
     @staticmethod 
     def main(*args: list[str]): 
