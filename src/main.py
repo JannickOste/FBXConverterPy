@@ -20,7 +20,7 @@ class FBXConverter:
         
         
     @staticmethod
-    def __init(args: list[str]) -> dict:
+    def __init(*args: list[str]) -> dict:
         if len(args) < 1: 
             raise Exception("Source argument not found...")
         elif len(args)< 2:
@@ -72,6 +72,7 @@ class FBXConverter:
     @staticmethod 
     def main(*args: list[str]): 
         FBXConverter.__printProgramInfo()
+        kwargs = {}
         try:
             kwargs = FBXConverter.__init(*args)
         except Exception as e: 
@@ -82,9 +83,6 @@ class FBXConverter:
             
             FBXConverter.__act(**kwargs)
 
-    
-        
-    
 
 if __name__ == '__main__': 
     FBXConverter.main(*sys.argv[1:])
