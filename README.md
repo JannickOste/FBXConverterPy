@@ -3,7 +3,7 @@
 ![](https://img.shields.io/badge/Python-14354C?style=for-the-badge&logo=python&logoColor=yellow)
 ![](https://img.shields.io/badge/current_state-working-21a62a?style=for-the-badge)
 
-(library currently in working but not some sections are still missing, null record handling and nestedlist support not currently added)
+(library currently in working but some sections are still missing, null record handling and nestedlist support not currently added)
 
 Python library for parsing and working with FBX (Filmbox) files. FBX is a binary file format used for storing 3D models, animations, and other related data in the computer graphics industry.
 
